@@ -7,38 +7,42 @@
 
 import SwiftUI
 
-let expenseItems = [
-    ExpenseItem(name: "吃饭", type: "饮食", price: "500"),
-    ExpenseItem(name: "坐车", type: "出行", price: "600"),
-    ExpenseItem(name: "买衣服", type: "购物", price: "20000")
-]
-
+//MVVM
 struct ContentView: View {
     @State private var showDetailView = false
+    
+    // 通过状态对象来订阅,实例化时使用stateObject来标记,如果使用observe的话,当前view被刷新时,会同时被再次实例化
+    @StateObject var expense = Expense()
     var body: some View {
         NavigationStack{
             // 当navigationView呼出的页面也是navigationView时,会出现title嵌套的问题,但是在新版本中已经修复
-            List(expenseItems) { expenseItem in
-                NavigationLink {
-                    DetailView()
-                } label: {
-                    HStack{
-                        VStack(alignment: .leading, spacing: 4){
-                            Text(expenseItem.name).font(.headline)
-                            Text(expenseItem.type)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
+            List {
+                ForEach(expense.expenseItems) { expenseItem in
+                    NavigationLink {
+                        DetailView(expense: expense, expenseItem: expenseItem)
+                    } label: {
+                        HStack{
+                            VStack(alignment: .leading, spacing: 4){
+                                Text(expenseItem.name).font(.headline)
+                                Text(expenseItem.type)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                            Text(expenseItem.price)
                         }
-                        Spacer()
-                        Text(expenseItem.price)
                     }
+                }
+                // onDelete方法是foreach的方法
+                .onDelete { indexSet in
+                    expense.deleteItem(indexSet: indexSet)
                 }
             }
             .navigationTitle("账单")
             .toolbar {
                 // 利用navigation实现跳转,子页面自带左上角返回功能
                 NavigationLink {
-                    DetailView()
+                    DetailView(expense: expense)
                 } label: {
                     Image(systemName: "plus")
                         .foregroundColor(.secondary)
@@ -59,7 +63,7 @@ struct ContentView: View {
 //            DetailView()
 //        }
         .fullScreenCover(isPresented: $showDetailView) {
-            DetailView()
+//            DetailView(expenseItemsM: $expenseItems)
         }
     }
 }

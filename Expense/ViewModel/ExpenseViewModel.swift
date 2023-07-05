@@ -18,9 +18,22 @@ class Expense: ObservableObject {
     
     func addItem(item: ExpenseItem) {
         expenseItems.append(item)
+//        objectWillChange.send()
     }
     
     func deleteItem(indexSet: IndexSet) {
         expenseItems.remove(atOffsets: indexSet)
+//        objectWillChange.send()
+    }
+    
+    func editItem(draftItem: DraftExpenseItem) {
+//        objectWillChange.send()
+        let index = expenseItems.firstIndex { draftItem.id == $0.id }!
+        let expenseItem = ExpenseItem(name: draftItem.name, type: draftItem.type, price: draftItem.price)
+        expenseItems[index] = expenseItem
+    }
+    
+    func refreshHomeUI() {
+        objectWillChange.send()
     }
 }

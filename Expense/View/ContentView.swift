@@ -19,7 +19,7 @@ struct ContentView: View {
             List {
                 ForEach(expense.expenseItems) { expenseItem in
                     NavigationLink {
-                        DetailView(expense: expense, expenseItem: expenseItem)
+                        EditView(expense: expense, draftExpenseItem: DraftExpenseItem(expenseItem))
                     } label: {
                         HStack{
                             VStack(alignment: .leading, spacing: 4){
@@ -42,7 +42,7 @@ struct ContentView: View {
             .toolbar {
                 // 利用navigation实现跳转,子页面自带左上角返回功能
                 NavigationLink {
-                    DetailView(expense: expense)
+                    AddView(expense: expense)
                 } label: {
                     Image(systemName: "plus")
                         .foregroundColor(.secondary)

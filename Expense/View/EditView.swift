@@ -14,7 +14,8 @@ struct EditView: View {
     
     // 可以被传值的数据
     // 通过观察对象来订阅
-    @ObservedObject var expense: Expense
+//    @ObservedObject var expense: Expense
+    @EnvironmentObject var expense: Expense
     @ObservedObject var draftExpenseItem: DraftExpenseItem
         
     var body: some View {

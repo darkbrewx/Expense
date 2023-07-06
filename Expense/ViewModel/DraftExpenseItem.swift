@@ -15,8 +15,6 @@ class DraftExpenseItem: ObservableObject {
     @Published var price: String
     
     init(_ expenseItem: ExpenseItem) {
-        print("xxxx")
-        print(expenseItem.price)
         id = expenseItem.id
         name = expenseItem.name
         type = expenseItem.type

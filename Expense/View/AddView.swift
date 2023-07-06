@@ -17,7 +17,8 @@ struct AddView: View {
     
     // 可以被传值的数据
     // 通过观察对象来订阅
-    @ObservedObject var expense: Expense
+//    @ObservedObject var expense: Expense
+    @EnvironmentObject var expense: Expense
     
     var body: some View {
         // 即便不在navigationView中,也可以调用navigation的后缀,因为前置的页面会提供bar
@@ -67,6 +68,6 @@ struct AddView: View {
 
 struct AddView_Previews: PreviewProvider {
     static var previews: some View {
-        AddView(expense: Expense())
+        AddView()
     }
 }

@@ -21,9 +21,9 @@ class Expense: ObservableObject {
 //        objectWillChange.send()
     }
     
-    func deleteItem(indexSet: IndexSet) {
-        expenseItems.remove(atOffsets: indexSet)
-//        objectWillChange.send()
+    func deleteItem(item: ExpenseItem) {
+        let index = expenseItems.firstIndex { item.id == $0.id }!
+        expenseItems.remove(at: index)
     }
     
     func editItem(draftItem: DraftExpenseItem) {

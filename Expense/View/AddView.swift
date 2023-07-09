@@ -54,7 +54,7 @@ struct AddView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    expense.addItem(item: ExpenseItem(name: name, type: type, price: price))
+                    expense.addItem(name: name, type: type, price: price)
                     dismiss()
                 } label: {
                     Text("保存")

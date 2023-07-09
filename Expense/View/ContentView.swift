@@ -11,14 +11,16 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var isUnread = true
-    @State private var showDetailView = false
+//    @State private var showDetailView = false
     // 通过状态对象来订阅,实例化时使用stateObject来标记,如果使用observe的话,当前view被刷新时,会同时被再次实例化
 //    @StateObject var expense = Expense()
+//    @ObservedObject var expense = Expense()
     @EnvironmentObject var expense: Expense
+    
     var body: some View {
         NavigationView{
             // 当navigationView呼出的页面也是navigationView时,会出现title嵌套的问题,但是在新版本中已经修复
-            List(expense.expenseItems) { expenseItem in
+            List(expense.expenseItems, id: \.id) { expenseItem in
                 NavigationLink {
                     EditView(draftExpenseItem: DraftExpenseItem(expenseItem))
                 } label: {
@@ -36,12 +38,10 @@ struct ContentView: View {
                     }
                     .tint(.blue)
                 }
-                .navigationTitle("账单")
-                .navigationViewStyle(.stack)
                 .swipeActions {
                     // fullswipe时触发第一个按钮的功能
                     Button(role: .destructive) {
-                        expense.deleteItem(item: expenseItem)
+                        expense.deleteItem(item: expenseItem, item2: DraftExpenseItem(expenseItem))
                     } label: {
                         Label("删除账单", systemImage: "trash")
                     }
@@ -60,6 +60,7 @@ struct ContentView: View {
 //                    expense.deleteItem(indexSet: indexSet)
 //                }
             }
+            .navigationTitle("账单")
             .toolbar {
                 // 利用navigation实现跳转,子页面自带左上角返回功能
                 NavigationLink {
@@ -80,12 +81,13 @@ struct ContentView: View {
 //                .padding(.horizontal)
             }
         }
+        .navigationViewStyle(.stack)
 //        .sheet(isPresented: $showDetailView) {
 //            DetailView()
 //        }
-        .fullScreenCover(isPresented: $showDetailView) {
+//        .fullScreenCover(isPresented: $showDetailView) {
 //            DetailView(expenseItemsM: $expenseItems)
-        }
+//        }
         // 多个对象的话,需要是不同类型,否则系统会无法识别
     }
 }
